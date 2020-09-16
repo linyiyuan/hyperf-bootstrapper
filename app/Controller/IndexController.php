@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\UserService;
+use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
-use Hyperf\HttpServer\Annotation\AutoController;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\HttpServer\Response;
 use Hyperf\Utils\Coroutine;
+use Hyperf\Pool\SimplePool\PoolFactory;
 
 /**
  * Class IndexController
@@ -29,21 +31,11 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-
-        $params = $this->request->input('user', 'asd');
-        $method = $this->request->getMethod();
-        $this->userService->params = $params;
-
-        return [
-            'params' => $this->userService->params,
-        ];
-
-        return [
-            'method' => $method,
-            'message' => "Hello {$user}.",
-            'inCoroutine' => Coroutine::inCoroutine(),
-            'coroutineId' => Coroutine::id(),
-        ];
+        return $this->response->json(
+            [
+                'list' => 1
+            ]
+        );
     }
 
     /**
