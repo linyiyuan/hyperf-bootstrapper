@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\AdminAnnotations\HfAdminC;
+use App\AdminAnnotations\HfAdminF;
 use App\Service\UserService;
-use Hyperf\DbConnection\Db;
+use Hyperf\Di\Annotation\AnnotationCollector;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Annotation\AutoController;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\HttpServer\Response;
-use Hyperf\Utils\Coroutine;
-use Hyperf\Pool\SimplePool\PoolFactory;
 
 /**
  * Class IndexController
+ * @HfAdminC(Cname="账号管理",Cstyle="fa-user",Csort=2)
  * @Controller()
  */
 class IndexController extends AbstractController
@@ -27,24 +28,19 @@ class IndexController extends AbstractController
     public $userService = '';
 
     /**
-     * @RequestMapping(path="test", methods="get, post")
+     * @HfAdminF(Fname="账号列表",Fdisplay=true,Fstyle="fa-circle-o")
+     * @RequestMapping(path="/test", methods="get, post")
      */
     public function index()
     {
+        $classArr = AnnotationCollector::getClassByAnnotation(HfAdminC::class);
+        var_dump($classArr);
+        $userId = $this->request->input('user_id') ?? 2;
+        $userInfo = $this->userService->getInfoById((int) $userId);
         return $this->response->json(
             [
-                'list' => 1
+                'list' => $userInfo
             ]
         );
-    }
-
-    /**
-     * @RequestMapping(path="test1", methods="get")
-     */
-    public function test(RequestInterface $request)
-    {
-        return [
-            'params' => $this->userService->params,
-        ];
     }
 }
