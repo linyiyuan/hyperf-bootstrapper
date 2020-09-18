@@ -16,6 +16,10 @@ return [
         ],
         'ignore_annotations' => [
             'mixin',
+            'date',
+            'author',
+            'Date',
+            'Author',
         ],
     ],
 ];

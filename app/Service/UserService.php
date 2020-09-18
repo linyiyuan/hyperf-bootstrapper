@@ -2,16 +2,14 @@
 namespace App\Service;
 
 use Hyperf\DbConnection\Db;
+use Hyperf\Utils\Context;
 
 class UserService
 {
     public $params = [];
 
-    public function getInfoById(int $id)
+    public function getInfoById()
     {
-        $userList = Db::table('sy_users')->get()->toArray();
-        $userList = array_column($userList, null, 'id');
-
-        return $userList[$id];
+        return ['linyiyuan'];
     }
 }

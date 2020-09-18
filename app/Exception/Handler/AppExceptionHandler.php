@@ -11,14 +11,39 @@ declare(strict_types=1);
  */
 namespace App\Exception\Handler;
 
+use App\Exception\BusinessException;
+use App\Foundation\Traits\ApiTrait;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Hyperf\Di\Annotation\Inject;
 use Throwable;
 
+/**
+ * 应用异常处理中心
+ * Class AppExceptionHandler
+ * @package App\Exception\Handler
+ * @author YiYuan-Lin
+ * @date: 2020/9/18
+ */
 class AppExceptionHandler extends ExceptionHandler
 {
+    use ApiTrait;
+
+    /**
+     * @Inject
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
+     * @Inject
+     * @var \Hyperf\HttpServer\Contract\ResponseInterface
+     */
+    protected $response;
+
     /**
      * @var StdoutLoggerInterface
      */
@@ -31,8 +56,16 @@ class AppExceptionHandler extends ExceptionHandler
 
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
+        // 判断是否由业务异常类抛出的异常
+        if ($throwable instanceof BusinessException) {
+            // 阻止异常冒泡
+            $this->stopPropagation();
+            return $this->error($throwable->getCode(), $throwable->getMessage());
+        }
+
         $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
         $this->logger->error($throwable->getTraceAsString());
+
         return $response->withHeader('Server', 'Hyperf')->withStatus(500)->withBody(new SwooleStream('Internal Server Error.'));
     }
 
