@@ -18,6 +18,10 @@ return [
     'scan_cacheable' => env('SCAN_CACHEABLE', false),
     'request_log' => env('APP_REQUEST_LOG', false),
     'response_log' => env('APP_RESPONSE_LOG', false),
+    // 是否记录日志
+    'app_log' => env('APP_LOG', false),
+    // 是否记录框架的日志
+    'hf_log' => env('HF_LOG', false),
     StdoutLoggerInterface::class => [
         'log_level' => [
             LogLevel::ALERT,

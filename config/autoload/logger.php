@@ -4,25 +4,64 @@ declare(strict_types=1);
 
 
 $appEnv = env('APP_ENV', 'dev');
-
-$logConfig = [
-    'default' => [
-        'handler' => [
-            'class' => Monolog\Handler\RotatingFileHandler::class,
-            'constructor' => [
-                'filename' => BASE_PATH . '/runtime/logs/hyperf/hyperf.log',
-                'level' => Monolog\Logger::DEBUG,
-            ],
+$handlers = [];
+$handlers = [
+    // info、waring、notice日志等
+    [
+        'class' => App\Foundation\Handler\LogFileHandler::class,
+        'constructor' => [
+            'filename' => BASE_PATH . '/runtime/logs/hyperf/hyperf.log',
+            'level' => Monolog\Logger::INFO,
         ],
         'formatter' => [
             'class' => Monolog\Formatter\LineFormatter::class,
             'constructor' => [
-                'format' => null,
-                'dateFormat' => 'Y-m-d H:i:s',
+                'format' => "%datetime%||%channel%||%level_name%||%message%||%context%||%extra%\n",
+                'dateFormat' => null,
                 'allowInlineLineBreaks' => true,
             ],
-        ],
+        ]
     ],
+    // debug日志
+    [
+        'class' => App\Foundation\Handler\LogFileHandler::class,
+        'constructor' => [
+            'filename' => BASE_PATH . '/runtime/logs/hyperf/hyperf-debug.log',
+            'level' => Monolog\Logger::DEBUG,
+        ],
+        'formatter' => [
+            'class' => Monolog\Formatter\LineFormatter::class,
+            'constructor' => [
+                'format' => "%datetime%||%channel%||%level_name%||%message%||%context%||%extra%\n",
+                'dateFormat' => null,
+                'allowInlineLineBreaks' => true,
+            ],
+        ]
+    ],
+    // error日志
+    [
+        'class' => App\Foundation\Handler\LogFileHandler::class,
+        'constructor' => [
+            'filename' => BASE_PATH . '/runtime/logs/hyperf/hyperf-error.log',
+            'level' => Monolog\Logger::ERROR,
+        ],
+        'formatter' => [
+            'class' => Monolog\Formatter\LineFormatter::class,
+            'constructor' => [
+                'format' => "%datetime%||%channel%||%level_name%||%message%||%context%||%extra%\n",
+                'dateFormat' => null,
+                'allowInlineLineBreaks' => true,
+            ],
+        ]
+    ],
+];
+$logConfig = [
+
+    'default' => [
+        // 配置多个handler，根据每个handel产生日志
+        'handlers' => $handlers
+    ],
+
 
     'request_log' => [
         'handler' => [
