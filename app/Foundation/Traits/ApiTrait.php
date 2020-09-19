@@ -54,7 +54,7 @@ trait ApiTrait
     }
 
     /**
-     * 抛出错误异常
+     * 抛出业务错误异常
      * @param int $code
      * @param string $message
      */

@@ -16,11 +16,13 @@ return [
     'app_name' => env('APP_NAME', 'skeleton'),
     'app_env' => env('APP_ENV', 'dev'),
     'scan_cacheable' => env('SCAN_CACHEABLE', false),
+    'request_log' => env('APP_REQUEST_LOG', false),
+    'response_log' => env('APP_RESPONSE_LOG', false),
     StdoutLoggerInterface::class => [
         'log_level' => [
             LogLevel::ALERT,
             LogLevel::CRITICAL,
-//            LogLevel::DEBUG,
+            //LogLevel::DEBUG,
             LogLevel::EMERGENCY,
             LogLevel::ERROR,
             LogLevel::INFO,

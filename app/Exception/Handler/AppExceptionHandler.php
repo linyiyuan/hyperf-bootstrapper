@@ -17,6 +17,7 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Logger\Exception\InvalidConfigException;
 use Psr\Http\Message\ResponseInterface;
 use Hyperf\Di\Annotation\Inject;
 use Throwable;
@@ -44,29 +45,17 @@ class AppExceptionHandler extends ExceptionHandler
      */
     protected $response;
 
-    /**
-     * @var StdoutLoggerInterface
-     */
-    protected $logger;
-
-    public function __construct(StdoutLoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
+        $message = '服务器错误 ' . $throwable->getMessage() . ':: FILE:' . $throwable->getFile() . ':: LINE: ' . $throwable->getLine();
         // 判断是否由业务异常类抛出的异常
         if ($throwable instanceof BusinessException) {
             // 阻止异常冒泡
             $this->stopPropagation();
-            return $this->error($throwable->getCode(), $throwable->getMessage());
+            return $this->error($throwable->getCode(), $message);
         }
+        return $this->error(500, $message);
 
-        $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
-        $this->logger->error($throwable->getTraceAsString());
-
-        return $response->withHeader('Server', 'Hyperf')->withStatus(500)->withBody(new SwooleStream('Internal Server Error.'));
     }
 
     public function isValid(Throwable $throwable): bool

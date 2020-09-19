@@ -10,5 +10,6 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 return [
+    //开启error_reporting() 错误监听器
     \Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler::class
  ];

@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Listener;
 
+use App\Foundation\Facades\Log;
 use Hyperf\Database\Events\QueryExecuted;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
@@ -55,7 +56,7 @@ class DbQueryExecutedListener implements ListenerInterface
                 }
             }
 
-            $this->logger->info(sprintf('[%s] %s', $event->time, $sql));
+            Log::sqlLog()->info(sprintf('[%s] %s', $event->time, $sql));
         }
     }
 }

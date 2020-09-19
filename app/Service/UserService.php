@@ -6,10 +6,10 @@ use Hyperf\Utils\Context;
 
 class UserService
 {
-    public $params = [];
 
-    public function getInfoById()
+    public function getInfoById($user_id)
     {
-        return ['linyiyuan'];
+        $userInfo = Db::table('sy_users')->where('id', $user_id)->first();
+        return $userInfo;
     }
 }
