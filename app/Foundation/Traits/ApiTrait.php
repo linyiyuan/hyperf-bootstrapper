@@ -2,7 +2,8 @@
 namespace App\Foundation\Traits;
 
 use App\Constants\StatusCode;
-use App\Exception\BusinessException;
+use App\Exception\Handler\BusinessException;
+use App\Foundation\Facades\Log;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Container\ContainerInterface;
@@ -93,6 +94,8 @@ trait ApiTrait
         $return['message'] = $message;
         $return['data'] = $data;
 
+        //记录请求参数日志记录
+        if (config('response_log')) Log::responseLog()->info('返回参数：' . json_encode($return));
         return $return;
     }
 }

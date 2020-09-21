@@ -29,17 +29,14 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-        try {
-            $user_id = $this->request->input('user_id');
-            $userInfo = $this->userService->getInfoById($user_id);
+        $user_id = $this->request->input('user_id');
+
+        $userInfo = $this->userService->getInfoById($user_id);
 
 
-           return $this->success([
+        return $this->success([
                'list' => $userInfo,
            ]);
-        }catch (Throwable $throwable) {
-            return $this->errorExp($throwable);
-        }
 
     }
 

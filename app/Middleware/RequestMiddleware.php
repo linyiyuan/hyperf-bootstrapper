@@ -41,20 +41,9 @@ class RequestMiddleware implements MiddlewareInterface
     {
         // 根据具体业务判断逻辑走向，这里假设用户携带的token有效
         $requireParams = $request->getQueryParams();
-        Log::requestLog()->info(json_encode($requireParams));
-        $isValidToken = false;
-        if ($isValidToken) {
-            return $handler->handle($request);
-        }
+        //记录请求参数日志记录
+        if (config('request_log')) Log::requestLog()->info('请求参数：' . json_encode($requireParams));
 
-        return $this->response->json(
-            [
-                'code' => -1,
-                'data' => [
-                    'error' => '中间里验证token无效，阻止继续向下执行',
-                ],
-            ]
-        );
         return $handler->handle($request);
     }
 }

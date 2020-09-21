@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Exception\Handler;
 
-use App\Exception\BusinessException;
+use App\Exception\Handler\BusinessException;
 use App\Foundation\Traits\ApiTrait;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
