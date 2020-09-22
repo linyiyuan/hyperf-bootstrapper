@@ -49,7 +49,12 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Foundation/Helpers/app.php"
+            "app/Foundation/Helpers/app.php",
+            "app/Foundation/Helpers/array.php",
+            "app/Foundation/Helpers/curl.php",
+            "app/Foundation/Helpers/functions.php",
+            "app/Foundation/Helpers/math.php",
+            "app/Foundation/Helpers/time.php"
         ]
     },
     "autoload-dev": {
