@@ -26,13 +26,9 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-        $user_id = $this->request->input('user_id');
-        $userInfo = $this->userService->getInfoById($user_id);
-
         return $this->success([
-               'list' => $userInfo,
+               'list' => [],
            ]);
-
     }
 
 }
