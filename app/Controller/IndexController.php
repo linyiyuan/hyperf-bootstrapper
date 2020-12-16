@@ -8,6 +8,7 @@ use App\Service\UserService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
+use Hyperf\Utils\Coroutine;
 
 /**
  * Class IndexController
@@ -26,8 +27,9 @@ class IndexController extends AbstractController
      */
     public function index()
     {
+
         return $this->success([
-               'list' => [],
+               'list' => Coroutine::id(),
            ]);
     }
 
